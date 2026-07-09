@@ -1,0 +1,171 @@
+*************************************************************
+*                         PREFACE                           *
+*                         PREFACE                           *
+*                         PREFACE                           *
+*************************************************************
+This is the Base Logic Not Including the NN Designed to Watch
+         the Pitch Grip as the Baseball is Released Live
+            ADAPTED FROM J DOUGLAS 4 STATCAST 
+                        TM IS MY OWN
+*************************************************************
+*                          LOGIC                            *
+*                            4                              *
+*                           ANN                             *
+*************************************************************
+
+1. Import the packages required (the whole nine yards)
+
+2. Load Dataframes (filtered to pitcher, database)
+
+3. Read the Dataframe (filtered to pitcher)
+    a. Tell User if there is no found dataframe for the pitcher
+        i. Redirect the user to Download Filtered STATCAST
+    b. Confirm they want to train model for pitcher {print pitcher name}
+        i. If yes continue
+        ii. If no end here
+4. Set RandomSeed (numpy)
+
+5. Define pitched dictionary
+    a. Add in Secret QC (Quiet Coyote) if ID = 164716
+        i. Only Read As QC if user find secret file path
+
+6. Create Pitch Count List by empty array * unique pitches in dictionary(not including QC)
+    a. Read filtered_df['pitch_type'] and count matched instances to the array
+    b. Ask to print pitches by pitch_type with input
+        i. If Yes print pitches by pitch_type with for loop
+        ii. If No dont print but still continue
+    c. Print # of distinct pitches the man throws
+
+7. Create Label Arrays -> Trainer, Verifier, Grader
+    a. Check Potential Canidates In Distinctions.txt e-> (Trackman)
+        i. Velo -> (Velo)
+        ii. API_Brk_x_arm -> (Hor. Movement)
+        iii. API_Brk_z_w/_GR -> (I. Vertical Movement)
+        iv. Spin Axis ->
+        v. az ->
+    b. Make All Arrays empty
+    c. Make Standard int for following for loop
+
+8. Append Data Set to Clean out outlier pitches or rarely thrown pitches
+    a. Use for p in range (df['pitch_type'].shape[0]) loop from previously defined pitch counter
+    b(ex).
+        b1. if pitch has been thrown abt 5 times or less
+            i. trainer_char.append(df['char'][p])
+            ...
+            ii. trainer_pitches.append(pitch_dict[df['pitch_type'][p]])
+            ...
+            iii. verifier_char.append(df['char'][p])
+            ...
+            iv. verifier_pitches.append(pitch_dict[df['pitch_type'][p]])
+            ...
+            v. grader_char.append(df['char'][p])
+            ...
+            vi. grader_pitches.append(pitch_dict[df['pitch_type'][p]])
+        b2. else if pitch in current count is less than 70% of total
+            i. trainer_char.append(df['char'][p])
+            ...
+            ii. trainer_pitches.append(pitch_dict[df['pitch_type'][p]])
+        b3. else if pitch in current count is less than 85%
+            i. verifier_char.append(df['char'][p])
+            ...
+            ii. verifier_pitches.append(pitch_dict[df['pitch_type'][p]])
+        b4. else
+            i. grader_char.append(df['char'][p])
+            ...
+            ii. grader_pitches.append(pitch_dict[df['pitch_type'][p]])
+    c. Add one to # of pitches in pitch dictionary
+    d. add one to Standard int made in 7c
+
+9. Make trainer_cs, verifier_cs, and grader_cs = np.column_stack([t/v/g_char_1,...,t/v/g_char_n])
+
+10. Instantiate trainer, verifier, grader_Rays = np.array(t/v/g_cs)
+    a. Make t/v/g_pitches = the Transposition of the array of t/v/g_pitches
+        i. Do NOT do the t/v/g_pitches thing for GRADER ONLY for t/v
+    b. set trainer_pitches, verifier_pitches = to_categorical of t/v_pitches
+
+11. Make an Architecture fitted to the following table:
+    Layer Type	Neurons	Activation	Notes
+    Dense	5	ReLU	Input layer (5 features)
+    Dense	64	ReLU	Hidden layer
+    Dense	128	ReLU	Hidden layer
+    Dropout	-	-	10% dropout
+    Dense	128	ReLU	Hidden layer
+    Dense	64	ReLU	Hidden layer
+    Dropout	-	-	10% dropout
+    Dense	32	ReLU	Hidden layer
+    Dense	16	ReLU	Hidden layer
+    Dense	n	Softmax	Output layer (n = number of classes = number of distinct pitches thrown)
+
+12. Compile the Model
+    a. optimizer is adam
+    b. loss is categorical crossentropy
+    c. metrics is accuracy
+
+13. Train the model
+    a. Set epoch_count
+    b. Set batch_count
+
+14. Fit the Model (
+    trainer_Rays,
+    trainer_pitches,
+    epochs=epoch_count,
+    batch_size=batch_count,
+    verifier_data = (verifier_Rays, verifier_pitches)
+)
+
+15. Write To Folder
+    a. Check if a folder with this pitcher's name exists inside the classification folder under this project
+        i. If it does exist then save the .h5 file inside there
+        ii. If it does NOT exist then create a folder inside this project named the pitchers last_name first_name
+            1. Write The .h5 file to this folder
+    b. Add First Name, Last Name, Date of Trainer, and ID to Database
+        i. Print that it was sent to the database
+
+16. Make predictions = model.predict(grader_Rays, batch_size=batch_count)
+
+17. Define Results Function that takes 2D List
+    a. Set high, tracker to 0
+    b. Set guesses to empty array
+    c. Create for g in range (w/ range = len(2D_List[g])
+        i. Set high = 2D_List[g][0]
+        ii. Append Guesses by (0)
+        iii. Set track = 0
+        iv. Create another for h in range (w/ range = len(2D_List[g]))
+            1. Create if 2D_List[g][h] > high
+                I. Set high = 2D_List[g][h]
+                II. Set track = h
+                III. Set guesses[g] = h
+    d. Return guesses
+
+18. Define Eval Function that takes pred and actual (lists from results(2D_Lists))
+    a. Set total, correct = 0
+    b. Create for g in range ((w/ range = len(pred))
+        i. Create if pred[g] == actual[g]
+            1. Add 1 to correct
+        ii. Add 1 to total
+    c. return correct, total
+
+19. Divide Correct by Total
+
+20. Print Accuracy with "...".format(eval(results(predictions), grader_pitches))
+
+*************************************************************
+*                          BONUS                            *
+*                           KNN                             *
+*                          BONUS                            *
+*************************************************************
+2. ...
+    a. .shape[0] pitches dataframe
+10. ...
+    a. ...
+
+11. Set classifier = the KNeighborsClassifier of n_neighbors = 5
+    a. .fit() the classifier with arguments trainer_Rays and trainer_pitches
+
+12. Set predictions = the .predict() of classifier with argument of verifier_Rays
+
+13. Print the following:
+    a. The confusion_matrix of arguments verifier_pitches and predictions
+    b. The classification_report of arguments verifier_pitches and predictions
+
+14. END

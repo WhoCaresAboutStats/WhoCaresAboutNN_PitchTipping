@@ -1,0 +1,46 @@
+1. Import all packages and dependencies
+
+2. Ask for pitcher Name
+    a. Split this into first_name and last_name
+    b. Check if his model has been trained or placed into the project folder
+        i. If yes then continue
+        ii. If no then give error and exit
+
+3. Open Empty Array that will hold Step 4's inputs
+
+4. Ask for the following Characteristics of player_name's pitch
+    a. Velo
+    b. API_Break_x_arm
+    c. API_Break_z_w/_Gr
+    d. Spin Axis
+    e. az
+
+5(o). Ask as comma separated values
+
+6. Make Pitch_stats = np.column_stack([velo, API_Break_x_arm, ... , az])
+
+7. Load the file
+    a. Use tf.keras.models.load_model(f'../SavedModels/{first_name}{last_name}/{last_name}{first_name}....h5')
+        i. Tentative AKA File Path Could Be Called Smth Else
+
+8. Set prediction = model.predict(pitch_stats)
+
+9. Define Results Function that takes 2D List
+    a. Set high, tracker, confidence to 0
+    b. Set guesses to empty array
+    c. Create for g in range (w/ range = len(2D_List[g]))
+        i. Set high = 2D_List[g][0]
+        ii. Append Guesses by (0)
+        iii. Set track = 0
+        iv. Create another for h in range (w/ range = len(2D_List[g]))
+            1. Create if 2D_List[g][h] > high
+                I. Set high = 2D_List[g][h]
+                II. Set track = h
+                III. Set guesses[g] = h
+    d. Return guesses, high
+
+10. Make projection, confidence = results(prediction)
+
+11. Print Projection of pitch_type
+
+12. Print Confidence in guess
