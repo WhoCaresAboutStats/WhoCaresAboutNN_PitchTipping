@@ -1,0 +1,38 @@
+---
+title: WCA_NeuralNetwork_&_PitchTipping
+#WCA_NeuralNetwork: #07F73F
+#TM: #D1CE21
+#SC: #2124D1
+#WCA_PitchTipping: #F70723
+#PitchRecognition: 6307F7
+timezone: America/New_York
+timeline:
+  ranges: ["2026-05-01 / 2026-07-31"]
+---
+# WCAS Vol. 1, Issue 2
+  ## WCA_NeuralNetwork #WCA_NeuralNetwork
+    2026-05-01/2026-05-10: Neural Network Commencement 
+      I began jotting down my first concepts for this project knowing it was going to be a difficulty jump of Rookie Ball to AAA. Though, I felt confident as the real difficulty lay off in the distance. 
+    2026-05-11/2026-05-28: "Since High School, My IQ's been Sky High" - Capital Steez
+      I had to take a break to focus on AP and other Exams. Consequently, I didn't accomplish much but I did come up with the start of Issue 3 and other fun side projects. Just a large amount of scribbling down future ideas.
+    2026-05-29: Project Resumption
+      This period of work was focused on the Neural Network.
+    2026-06-20/2026-07-04: TM Deadend #TM
+      Reached many, many deadends with regards to designing a pitch grip recognizer for TM systems. Simply, I didn't have clearance as some random kid with a scheme and a dream to view file paths and extensive pitch videos from Trackman systems.
+    2026-06-27: SC Neural Network Completion #SC
+      Worked to better it and finished the first version
+    2026-07-01: SC Neural Network V2 #SC
+      Finished the Spin_test scripts which create a better characteristic palette system
+  ## WCA_PitchTipping #WCA_PitchTipping
+    2026-07-04/2026-07-05: Postponement of TM  #PitchRecognition
+      Due to my non-existent credentials, I pivoted to doing pitch recognition via Statcast film.
+    2026-07-05/2026-07-07: "They Just Call It a Strange Shift" - Also Capital Steez
+      Somewhere along the way, I realized that detecting pitch tipping would use a similar system but be more useful (I was also getting mad bored labeling landmarks in DeepLabCut).
+    2026-07-07: Pitch Tipping V0.1 Completion
+     I completed first version after working all night. I still will flesh out more features soon.
+    2026-07-08/2026-08-15: Future Versions
+      More Details on updates coming soon
+    
+  
+    
+  
